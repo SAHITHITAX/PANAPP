@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Invoice</title>
+    <style>
+        .invoice-container {
+            display: none;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 300px;
+        }
+        .input-container {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="collectDetails()">Generate Invoice</button>
+
+    <div class="invoice-container" id="invoiceContainer">
+        <h3>Invoice</h3>
+        <p><strong>Name:</strong> <span id="invoiceName"></span></p>
+        <p><strong>AO Code:</strong> <span id="invoiceAoCode"></span></p>
+        <p><strong>Gender:</strong> <span id="invoiceGender"></span></p>
+        <p><strong>Photo:</strong> <img id="invoicePhoto" src="" alt="Photo" width="100"></p>
+        <p><strong>Signature:</strong> <img id="invoiceSign" src="" alt="Signature" width="100"></p>
+    </div>
+
+    <!-- File upload inputs for photo and signature -->
+    <div id="uploadSection" style="display: none;">
+        <div class="input-container">
+            <label for="photoUpload">Upload Photo:</label>
+            <input type="file" id="photoUpload" accept="image/*">
+        </div>
+        <div class="input-container">
+            <label for="signUpload">Upload Signature:</label>
+            <input type="file" id="signUpload" accept="image/*">
+        </div>
+        <button onclick="processDetails()">Generate Invoice with Uploads</button>
+    </div>
+
+    <script>
+        let name, aoCode, gender, photoUrl, signUrl;
+
+        function collectDetails() {
+            // Prompt for name, AO code, and gender
+            name = prompt("Enter your name:");
+            aoCode = prompt("Enter AO Code:");
+            gender = prompt("Enter gender (M/F):");
+
+            // Show the file upload section
+            if (name && aoCode && gender) {
+                document.getElementById("uploadSection").style.display = "block";
+            } else {
+                alert("Please provide all the details.");
+            }
+        }
+
+        function processDetails() {
+            // Get file inputs
+            const photoFile = document.getElementById("photoUpload").files[0];
+            const signFile = document.getElementById("signUpload").files[0];
+
+            if (photoFile && signFile) {
+                // Use FileReader to convert files to data URLs
+                const reader1 = new FileReader();
+                reader1.onload = function(e) {
+                    photoUrl = e.target.result;
+                    const reader2 = new FileReader();
+                    reader2.onload = function(e) {
+                        signUrl = e.target.result;
+
+                        // Open a new window to display the invoice
+                        const invoiceWindow = window.open("", "_blank", "width=600,height=400");
+
+                        // Write the invoice details into the new window
+                        invoiceWindow.document.write(`
+                            <html>
+                                <head><title>Invoice</title></head>
+                                <body>
+<div style="border: 1px solid #000; padding: 20px; margin: 20px; font-family: Arial, sans-serif;">
+
+                                 <table style="width: 100%; margin-bottom: 0px;">
+         				 <tr>
+         				<td style="width: 20%; vertical-align: top;">
+  <div style="position: relative; display: inline-block;">
+    <img id="emp-photo" src="${photoUrl}" alt="Employee Photo"
+         style="max-width: 150px; max-height: 150px; border: 1px solid #ccc; border-radius: 4px;" />
+    
+    <img src="${signUrl}" alt="Signature"
+         style="position: absolute; top: 50px; left: -70px; width: 160px; opacity: 0.9; transform: rotate(-20deg);" />
+  </div>
+</td>
+
+
+            				  <td style="width: 60%; text-align: center; vertical-align: top;">
+            				    <h1 style="margin: 5px 0; font-size: 10px;">Form No. 49A</h1>
+          				    <h2 style="margin: 5px 0; font-size: 10px;">Application for Allotment of Permanent Account Number</h2>
+              				    <h3 style="margin: 5px 0; font-size: 10px;">[In the case of Indian Citizens/lndian Companies/Entities incorporated in India/</h3>
+              				    <h3 style="margin: 5px 0; font-size: 10px;">Unincorporated entities formed in India]</h3>
+           			            <h3 style="margin: 5px 0; font-size: 10px;">See Rule 114</h3>
+             				    <p style="margin: 5px 0; font-size: 7px;">To avoid mistake(s), please follow the accompanying instructions and examples before filling up the form</p>
+             			            <h2 style="margin: 5px 0; font-size: 10px; text-align: left; ">Assessing officer (AO code)</h2>
+					<div style="width: 280px; ">
+					 <table style="width:100%; font-size:8px; border-collapse: collapse; border: 1px solid black;">
+    						<tr>
+     					    	   <td colspan="3" style="padding:0px; text-align: center; border: 1px solid black;"><strong>Area Code</strong></td>
+    						    <td colspan="2" style="padding:0px; text-align: center; border: 1px solid black;"><strong>AO Type</strong></td>
+       							 <td colspan="3" style="padding:0px; text-align: center; border: 1px solid black;"><strong>Range Code</strong></td>
+     							   <td colspan="2" style="padding:0px; text-align: center; border: 1px solid black;"><strong>AO No.</strong></td>
+   						</tr>
+    						<tr>
+       							 <td style="padding:0px; border: 1px solid black;">${aoCode ? aoCode.charAt(0) : " "}</td>
+     							   <td style="padding:0px; border: 1px solid black;">${aoCode ? aoCode.charAt(1) : " "}</td>
+    							    <td style="padding:0px; border: 1px solid black;">${aoCode ? aoCode.charAt(2) : " "}</td>
+   							     <td style="padding:0px; border: 1px solid black;"><span id="ao"></span></td>
+       								 <td style="padding:0px; border: 1px solid black;"><span id="ao1"></span></td>
+       								 <td style="padding:0px; border: 1px solid black;"><span id="range"></span></td>
+       								 <td style="padding:0px; border: 1px solid black;"><span id="range1"></span></td>
+       								 <td style="padding:0px; border: 1px solid black;"><span id="range2"></span></td>
+       								 <td style="padding:0px; border: 1px solid black;"><span id="aono"></span></td>
+       								 <td style="padding:0px; border: 1px solid black;"><span id="aono1"></span></td>
+    						</tr>
+					</table>
+
+ 					 </div>
+					 </td>
+           				 <td style="width: 20%; text-align: right; vertical-align: top;">
+           			          <img id="emp-photo1" src="${photoUrl}" alt="Employee Photo" style="max-width: 150px; max-height: 150px; border: 1px solid #ccc; border-radius: 4px;" />
+         			        </td>
+                                      </tr>
+                                 </table>
+				<table style="width:100%; font-size:10px; height: 75px">
+ 					 <tr style="width:70%; height: 7px">
+    						<td rowspan="2" style="padding:px; text-align: left; vertical-align: middle;"><strong>Sir,</br>
+									 I/We hereby request that a permanent account number be allotted to me/us. </br>
+ 									 I/We give below necessary particulars:</strong>
+						</td>
+    						<td style="padding:px; text-align: center;"> <img src="${signUrl}" alt="Signature" width="160">
+
+						</td>
+  					</tr>
+ 					<tr style="width:30%">
+    						<td style="padding:px; text-align: center; height: 5px"> Signature / Left Thumb Impression</td>
+  					</tr>
+				</table>
+
+					<p>IamNikhil</p>
+                                    <h3>Invoice</h3>
+                                    <p><strong>Name:</strong> ${name}</p>
+                                    <p><strong>AO Code:</strong> ${aoCode}</p>
+                                    <p><strong>Gender:</strong> ${gender}</p>
+                                    <p><strong>Photo:</strong> <img src="${photoUrl}" alt="Photo" width="100"></p>
+                                    <p><strong>Signature:</strong> <img src="${signUrl}" alt="Signature" width="100"></p>
+				</div>
+                                </body>
+                            </html>
+                        `);
+                        invoiceWindow.document.close();
+                    };
+                    reader2.readAsDataURL(signFile);
+                };
+                reader1.readAsDataURL(photoFile);
+            } else {
+                alert("Please upload both a photo and signature.");
+            }
+        }
+    </script>
+
+</body>
+</html>
+	
