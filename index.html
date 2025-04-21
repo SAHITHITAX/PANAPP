@@ -1,85 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate Invoice</title>
-    <style>
-        .invoice-container {
-            display: none;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            padding: 20px;
-            width: 300px;
-        }
-        .input-container {
-            margin-bottom: 10px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generate Invoice</title>
+  <style>
+    .input-container {
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
 
-    <button onclick="collectDetails()">Generate Invoice</button>
+  <button onclick="collectDetails()">Generate Invoice</button>
 
-    <div class="invoice-container" id="invoiceContainer">
-        <h3>Invoice</h3>
-        <p><strong>Name:</strong> <span id="invoiceName"></span></p>
-        <p><strong>AO Code:</strong> <span id="invoiceAoCode"></span></p>
-        <p><strong>Gender:</strong> <span id="invoiceGender"></span></p>
-        <p><strong>Photo:</strong> <img id="invoicePhoto" src="" alt="Photo" width="100"></p>
-        <p><strong>Signature:</strong> <img id="invoiceSign" src="" alt="Signature" width="100"></p>
+  <div id="uploadSection" style="display: none;">
+    <div class="input-container">
+      <label for="photoUpload">Upload Photo:</label>
+      <input type="file" id="photoUpload" accept="image/*" />
     </div>
-
-    <!-- File upload inputs for photo and signature -->
-    <div id="uploadSection" style="display: none;">
-        <div class="input-container">
-            <label for="photoUpload">Upload Photo:</label>
-            <input type="file" id="photoUpload" accept="image/*">
-        </div>
-        <div class="input-container">
-            <label for="signUpload">Upload Signature:</label>
-            <input type="file" id="signUpload" accept="image/*">
-        </div>
-        <button onclick="processDetails()">Generate Invoice with Uploads</button>
+    <div class="input-container">
+      <label for="signUpload">Upload Signature:</label>
+      <input type="file" id="signUpload" accept="image/*" />
     </div>
+    <div class="input-container">
+      <label for="aadhaarUpload">Upload Aadhaar PDF:</label>
+      <input type="file" id="aadhaarUpload" accept="application/pdf" />
+    </div>
+    <div class="input-container">
+      <label for="otherPdfUpload">Upload Other PDF:</label>
+      <input type="file" id="otherPdfUpload" accept="application/pdf" />
+    </div>
+    <button onclick="processDetails()">Generate Invoice with Uploads</button>
+  </div>
 
-    <script>
-        let name, aoCode, gender, photoUrl, signUrl;
+  <!-- Include PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-        function collectDetails() {
-            // Prompt for name, AO code, and gender
-            name = prompt("Enter your name:");
-            aoCode = prompt("Enter AO Code:");
-            gender = prompt("Enter gender (M/F):");
+  <script>
+    let name, aoCode, gender;
 
-            // Show the file upload section
-            if (name && aoCode && gender) {
-                document.getElementById("uploadSection").style.display = "block";
-            } else {
-                alert("Please provide all the details.");
-            }
-        }
+    function collectDetails() {
+      name = prompt("Enter your name:");
+      aoCode = prompt("Enter AO Code:");
+      gender = prompt("Enter gender (M/F):");
 
-        function processDetails() {
-            // Get file inputs
-            const photoFile = document.getElementById("photoUpload").files[0];
-            const signFile = document.getElementById("signUpload").files[0];
+      if (name && aoCode && gender) {
+        document.getElementById("uploadSection").style.display = "block";
+      } else {
+        alert("Please provide all the details.");
+      }
+    }
 
-            if (photoFile && signFile) {
-                // Use FileReader to convert files to data URLs
-                const reader1 = new FileReader();
-                reader1.onload = function(e) {
-                    photoUrl = e.target.result;
-                    const reader2 = new FileReader();
-                    reader2.onload = function(e) {
-                        signUrl = e.target.result;
+    async function renderPdfAsImage(file) {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const page = await pdf.getPage(1); // Just render the first page for preview
 
-                        // Open a new window to display the invoice
-                        const invoiceWindow = window.open("", "_blank", "width=600,height=400");
+      const viewport = page.getViewport({ scale: 1.5 });
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
 
-                        // Write the invoice details into the new window
-                        invoiceWindow.document.write(`
-                            <html>
+      await page.render({ canvasContext: context, viewport: viewport }).promise;
+      return canvas.toDataURL(); // returns image-like data URI
+    }
+
+    function processDetails() {
+      const photoFile = document.getElementById("photoUpload").files[0];
+      const signFile = document.getElementById("signUpload").files[0];
+      const aadhaarFile = document.getElementById("aadhaarUpload").files[0];
+      const otherPdfFile = document.getElementById("otherPdfUpload").files[0];
+
+      if (!photoFile || !signFile || !aadhaarFile || !otherPdfFile) {
+        alert("Please upload all files including Aadhaar and Other PDF.");
+        return;
+      }
+
+      const reader1 = new FileReader();
+      reader1.onload = function(e) {
+        const photoUrl = e.target.result;
+
+        const reader2 = new FileReader();
+        reader2.onload = function(e) {
+          const signUrl = e.target.result;
+
+          Promise.all([
+            renderPdfAsImage(aadhaarFile),
+            renderPdfAsImage(otherPdfFile)
+          ]).then(([aadhaarImgUrl, otherPdfImgUrl]) => {
+            const invoiceWindow = window.open("", "_blank", "width=800,height=700");
+            invoiceWindow.document.write(`
+                                   <html>
                                 <head><title>Invoice</title></head>
                                 <body>
 <div style="border: 1px solid #000; padding: 0px; margin: 10px; font-family: Arial, sans-serif;">
@@ -446,8 +459,277 @@ by furnishing name of the mother only)’</p>
        
 
     </table>
+<table>
+<tr>
+<td style="width: 15%; border: 0px solid #ccc;">Email ID</td><td style="width: 65%; border: 1px solid #ccc;"></td> 
+</tr>
+</table>
+
+
+ <div style="background-color: #f2f2f2;">
+<h2 style="margin: px 0; font-size: 9.9px;">10 Status of applicant</h2>
 </div>
 
+ <table style="width: 100%; white-space: nowrap;font-size: 10px; padding:2px; border-collapse: separate; border-spacing: 0 5px; ">
+
+
+        <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+          <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+ <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+       
+
+       
+
+    </table>
+
+<div style="background-color: #f2f2f2;">
+<h2 style="margin: px 0; font-size: 9.9px;">11 Registration Number (for company, firms, LLPs etc.)</h2>
+</div>
+
+ <table style="width: 100%; white-space: nowrap;font-size: 10px; padding:2px; border-collapse: separate; border-spacing: 0 5px; ">
+
+
+        <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+
+       
+
+    </table>
+
+<div style="background-color: #f2f2f2;">
+<h2 style="margin: px 0; font-size: 9.9px;"> 12 In case of a person, who is required to quote Aadhaar number  or the Enrolment ID of Aadhaar application form  as per section 139 AA</h2>
+</div>
+
+ <table style="width: 100%; white-space: nowrap;font-size: 10px; padding:2px; border-collapse: separate; border-spacing: 0 5px; ">
+
+
+        <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+       <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+       <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+       <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+       <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+       <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+       <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+
+       
+
+    </table>
+
+<div style="background-color: #f2f2f2;">
+<h2 style="margin: px 0; font-size: 9.9px;"> 13 Source of Income </h2>
+</div>
+
+ <table style="width: 100%; white-space: nowrap;font-size: 10px; padding:2px; border-collapse: separate; border-spacing: 0 5px; ">
+
+
+        <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+      <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+
+      <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+
+
+       
+
+    </table>
+
+
+<div style="background-color: #f2f2f2;">
+<h2 style="margin: px 0; font-size: 9.9px;">1 Full Name (Full expanded name to be mentioned as appearing in proof of identity/date of birth/address documents: initials are not permitted)</h2>
+</div>
+<div style="font-size: 9.9px;">
+ <table style="width: 100%; white-space: nowrap;font-size: 10px; padding:2px; border-collapse: separate; border-spacing: 0 5px; ">
+
+        <tr>
+            <td style="width: 30%; border: 0px solid #ccc;">Please select title, as applicable</td>
+            <td></td>
+            <td colspan="2" style="border: 0px solid #ccc;">Shri</td>
+            <td></td>
+            <td colspan="2" style="border: 0px solid #ccc;">Smt.</td>
+            <td></td>
+            <td colspan="3" style="border: 0px solid #ccc;">Kumari</td>
+            <td></td>
+            <td colspan="2" style="border: 0px solid #ccc;">M/s</td>
+            <td colspan="16" style="border: 0px solid #ccc;"></td>
+        </tr>
+        <tr>
+            <td style="width: 30%; border: 0px solid #ccc;">Last Name / Surname</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+        <tr>
+            <td style="width: 30%; border: 0px solid #ccc;">First Name</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+        <tr>
+            <td style="width: 30%; border: 0px solid #ccc;">Middle Name </td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+
+    </table>
+</div>
+
+<p>Residence Address</p>
+<div style="font-size: 9.9px;">
+ <table style="width: 100%; white-space: nowrap;font-size: 10px; padding:2px; border-collapse: separate; border-spacing: 0 5px; ">
+
+
+        <tr>
+            <td style="width: 30%; border: 0px solid #ccc;">Flat / Room / Door / Block No. </td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+        <tr>
+            <td style="width: 30%; border: 0px solid #ccc;">Name of Premises / Building / Village</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+        <tr>
+            <td style="width: 30%; border: 0px solid #ccc;">Road / Street / Lane/Post Office </td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+        <tr>
+            <td style="width: 30%; border: 0px solid #ccc;">Area / Locality / Taluka/ Sub- Division </td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+        <tr>
+            <td style="width: 30%; border: 0px solid #ccc;">Town / City / District </td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+  </tr>
+
+            <tr>
+            <td style="width: 40%; border: 0px solid #ccc;">State / Union Territory    </td><td colspan="7" style="border: 0px solid #ccc;">Pincode / Zip code</td><td colspan="22" style="border: 0px solid #ccc;">Country Name</td>
+        </tr>
+        <tr>
+            <td style="width: 40%; border: 1px solid #ccc;"> </td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td colspan="22">A</td> 
+        </tr>
+
+    </table>
+<div style="background-color: #f2f2f2;">
+<h2 style="margin: px 0; font-size: 9.9px;"> 15 Documents submitted as Proof of Identity (POI), Proof of Address (POA) and Proof of Date of Birth (POB) </h2>
+</div>
+
+ <table style="width: 100%; white-space: nowrap;font-size: 10px; padding:2px; border-collapse: separate; border-spacing: 0 5px; ">
+
+
+        <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+      <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+
+      <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+
+
+       
+
+    </table>
+
+<div style="background-color: #f2f2f2;">
+<h2 style="margin: px 0; font-size: 9.9px;"> 16 </h2>
+</div>
+
+ <table style="width: 100%; white-space: nowrap;font-size: 10px; padding:2px; border-collapse: separate; border-spacing: 0 5px; ">
+
+
+        <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+      <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+
+      <tr>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+
+
+       
+
+    </table>
+
+
+
+
+
+</div>
+
+</div>
 					<p>IamNikhil</p>
                                     <h3>Invoice</h3>
                                     <p><strong>Name:</strong> ${name}</p>
@@ -455,21 +737,21 @@ by furnishing name of the mother only)’</p>
                                     <p><strong>Gender:</strong> ${gender}</p>
                                     <p><strong>Photo:</strong> <img src="${photoUrl}" alt="Photo" width="100"></p>
                                     <p><strong>Signature:</strong> <img src="${signUrl}" alt="Signature" width="100"></p>
-				</div>
+					<p><strong></strong><br><img src="${aadhaarImgUrl}"/></p>
+             			     <p><strong></strong><br><img src="${otherPdfImgUrl}"/></p>
+
+				
                                 </body>
                             </html>
-                        `);
-                        invoiceWindow.document.close();
-                    };
-                    reader2.readAsDataURL(signFile);
-                };
-                reader1.readAsDataURL(photoFile);
-            } else {
-                alert("Please upload both a photo and signature.");
-            }
-        }
-    </script>
+            `);
+            invoiceWindow.document.close();
+          });
+        };
+        reader2.readAsDataURL(signFile);
+      };
+      reader1.readAsDataURL(photoFile);
+    }
+  </script>
 
 </body>
 </html>
-	
