@@ -143,6 +143,32 @@
                                 <head><style>
   body { font-family: sans-serif; padding: 20px; }
   img.a4 { border: 1px solid #ddd; margin-top: 10px; width: 794px; height: 1123px; object-fit: contain; background: #fff; }
+
+  body { 
+                    font-family: sans-serif; 
+                    padding: 20px; 
+                    margin: 0;
+                    box-sizing: border-box;
+                    height: 100%;
+                    overflow: hidden;
+                  }
+                  .invoice-content {
+                    max-width: 794px;
+                    max-height: 1123px;
+                    overflow: hidden;
+                    page-break-before: always;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                  }
+                  img.a4 { 
+                    border: 1px solid #ddd; 
+                    margin-top: 10px; 
+                    width: 794px; 
+                    height: 1123px; 
+                    object-fit: contain; 
+                    background: #fff; 
+                  }
 </style>
 <title>Invoice</title></head>
                                 <body>
