@@ -32,6 +32,10 @@
       <label for="otherPdfUpload">Upload Other PDF:</label>
      <input type="file" id="otherPdfUpload" accept="application/pdf,image/*" />
     </div>
+     <div class="input-container">
+      <label for="ackPdfUpload">Upload ack PDF:</label>
+     <input type="file" id="ackPdfUpload" accept="application/pdf,image/*" />
+    </div>
     <button onclick="processDetails()">Generate Invoice with Uploads</button>
   </div>
 
@@ -53,25 +57,29 @@
       }
     }
 
-  async function renderFileAsImage(file) {
+async function renderFileAsImage(file) {
   const A4_WIDTH = 700;
   const A4_HEIGHT = 1100;
+  const QUALITY_MULTIPLIER = 4; // 4x bigger for ultra quality (can set 5 or 6 too)
 
   if (file.type === "application/pdf") {
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     const page = await pdf.getPage(1);
 
-    const scale = A4_WIDTH / page.getViewport({ scale: 1 }).width;
-    const viewport = page.getViewport({ scale });
+    const viewport = page.getViewport({ scale: 1 });
+    const scale = (A4_WIDTH * QUALITY_MULTIPLIER) / viewport.width;
+    const highResViewport = page.getViewport({ scale });
 
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    canvas.width = A4_WIDTH;
-    canvas.height = A4_HEIGHT;
+    canvas.width = highResViewport.width;
+    canvas.height = highResViewport.height;
 
-    await page.render({ canvasContext: context, viewport }).promise;
-    return canvas.toDataURL();
+    await page.render({ canvasContext: context, viewport: highResViewport }).promise;
+
+    // Return full quality PNG directly
+    return canvas.toDataURL("image/png");
   } else if (file.type.startsWith("image/")) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -79,25 +87,21 @@
       reader.onload = function (e) {
         img.onload = function () {
           const canvas = document.createElement("canvas");
-          canvas.width = A4_WIDTH;
-          canvas.height = A4_HEIGHT;
+
+          // Calculate target size keeping aspect ratio and scaling
+          let targetWidth = img.width * QUALITY_MULTIPLIER;
+          let targetHeight = img.height * QUALITY_MULTIPLIER;
+
+          canvas.width = targetWidth;
+          canvas.height = targetHeight;
 
           const ctx = canvas.getContext("2d");
           ctx.fillStyle = "white";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-          // Maintain aspect ratio while fitting into A4
-          let scale = Math.min(
-            A4_WIDTH / img.width,
-            A4_HEIGHT / img.height
-          );
-          let w = img.width * scale;
-          let h = img.height * scale;
-          let x = (A4_WIDTH - w) / 2;
-          let y = (A4_HEIGHT - h) / 2;
+          ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
 
-          ctx.drawImage(img, x, y, w, h);
-          resolve(canvas.toDataURL());
+          resolve(canvas.toDataURL("image/png"));
         };
         img.src = e.target.result;
       };
@@ -109,14 +113,17 @@
   }
 }
 
+
+
   function processDetails() {
     const photoFile = document.getElementById("photoUpload").files[0];
     const signFile = document.getElementById("signUpload").files[0];
     const aadhaarFile = document.getElementById("aadhaarUpload").files[0];
     const otherPdfFile = document.getElementById("otherPdfUpload").files[0];
+    const ackPdfFile = document.getElementById("ackPdfUpload").files[0];
 
-    if (!photoFile || !signFile || !aadhaarFile) {
-      alert("Please upload Photo, Signature, and Aadhaar file.");
+    if (!photoFile || !signFile || !aadhaarFile || !ackPdfFile) {
+      alert("Please upload Photo, Signature,Aadhaar file and ack file.");
       return;
     }
 
@@ -129,7 +136,11 @@
         const signUrl = e.target.result;
 
         // Use Promise.all to process both Aadhaar and Other PDF (if uploaded)
-        const promises = [renderFileAsImage(aadhaarFile)];
+        const promises = [
+  renderFileAsImage(aadhaarFile),
+  renderFileAsImage(ackPdfFile)
+];
+
 
         // If "Other PDF" is uploaded, add it to the promises array
         if (otherPdfFile) {
@@ -137,7 +148,7 @@
         }
 
         // Process both files and render the invoice
-        Promise.all(promises).then(([aadhaarImgUrl, otherPdfImgUrl]) => {
+        Promise.all(promises).then(([aadhaarImgUrl, ackImgUrl, otherPdfImgUrl]) => {
           const invoiceWindow = window.open("", "_blank", "width=800,height=700");
           invoiceWindow.document.write(`                                   <html>
                                 <head><style>
@@ -172,7 +183,12 @@
 </style>
 <title>Invoice</title></head>
                                 <body>
+
+
+<div>     <p><strong></strong><br><img src="${ackImgUrl}" class="a4"/></p></div>
 <div style="border: 1px solid #000; padding: 0px; margin: 10px; font-family: Arial, sans-serif;">
+
+
 
                                  <table style="width: 100%; margin-bottom: 0px;">
          				 <tr>
@@ -818,6 +834,7 @@ by furnishing name of the mother only)’</p>
              			     ${otherPdfImgUrl ? `<p><strong>Other File Preview:</strong><br><img src="${otherPdfImgUrl}" class="a4"/></p>` : ''}
            
 				
+
                                 </body>
                             </html>
             `);
