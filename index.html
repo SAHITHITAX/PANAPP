@@ -50,6 +50,12 @@
     <option value="F">Female</option>
   </select><br><br>
 
+<h2>Upload an HTML file</h2>
+
+  <input type="file" id="fileInput" accept=".html">
+  <p id="result"></p>
+
+
   <button type="button" onclick="collectDetails()">Submit</button>
 </form>
   <button onclick="collectDetails()">Generate Invoice</button>
@@ -82,7 +88,34 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <script>
-    let date, lastname, firstname, middlename, name, flastname, ffirstname, fmiddlename, dob, aoCode, gender;
+let fNameValue = null; // Declare it at the top with other variables
+
+const fileInput = document.getElementById('fileInput');
+const result = document.getElementById('result');
+
+fileInput.addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  if (!file) {
+    result.textContent = "No file selected.";
+    return;
+  }
+
+  const text = await file.text();
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, "text/html");
+
+  const fNameElement = doc.getElementById('f_name');
+  fNameValue = fNameElement ? (fNameElement.value || fNameElement.textContent) : null;
+
+  if (fNameValue !== null) {
+    result.textContent = `Value of #f_name: ${fNameValue}`;
+  } else {
+    result.textContent = "Element with id='f_name' not found.";
+  }
+});
+
+let date, lastname, firstname, middlename, name, flastname, ffirstname, fmiddlename, dob, aoCode, gender, fname;
 
 function collectDetails() {
   date = document.getElementById("date").value;
@@ -96,6 +129,8 @@ function collectDetails() {
   dob = document.getElementById("dob").value;
   aoCode = document.getElementById("aoCode").value;
   gender = document.getElementById("gender").value;
+  fname = fNameValue;  // Now it works because fNameValue is global
+
 
   if (name && aoCode && gender && date && lastname && firstname && flastname && ffirstname && dob) {
     document.getElementById("uploadSection").style.display = "block";
@@ -272,7 +307,7 @@ async function renderFileAsImage(file) {
     <tr style="height: 29px;">
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${aoCode ? aoCode.charAt(0) : " "}</td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${aoCode ? aoCode.charAt(1) : " "}</td>
-      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${aoCode ? aoCode.charAt(2) : " "}</td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${fname ? fname.charAt(2) : " "}</td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;"><span id="ao"></span></td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;"><span id="ao1"></span></td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;"><span id="range"></span></td>
