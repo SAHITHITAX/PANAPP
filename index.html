@@ -12,7 +12,46 @@
   </style>
 </head>
 <body>
+<form id="detailsForm">
+  <label for="date">Application Date:</label>
+  <input type="text" id="date" name="date"><br><br>
 
+    <label for="lastname">Last Name:</label>
+  <input type="text" id="lastname" name="lastname"><br><br>
+
+    <label for="firstname">First Name:</label>
+  <input type="text" id="firstname" name="firstname"><br><br>
+
+    <label for="middlename">Middle Name:</label>
+  <input type="text" id="middlename" name="middlename"><br><br>
+
+
+  <label for="full name">Name:</label>
+  <input type="text" id="name" name="name"><br><br>
+
+    <label for="flastname">Father's Last Name:</label>
+  <input type="text" id="flastname" name="flastname"><br><br>
+
+    <label for="ffirstname">Father's First Name:</label>
+  <input type="text" id="ffirstname" name="ffirstname"><br><br>
+
+    <label for="fmiddlename">Father's Middle Name:</label>
+  <input type="text" id="fmiddlename" name="fmiddlename"><br><br>
+
+  <label for="dob">Date of Birth / Incorporation :</label>
+  <input type="text" id="dob" name="dob"><br><br>
+
+  <label for="aoCode">AO Code:</label>
+  <input type="text" id="aoCode" name="aoCode"><br><br>
+
+  <label for="gender">Gender:</label>
+  <select id="gender" name="gender">
+    <option value="M">Male</option>
+    <option value="F">Female</option>
+  </select><br><br>
+
+  <button type="button" onclick="collectDetails()">Submit</button>
+</form>
   <button onclick="collectDetails()">Generate Invoice</button>
 
   <div id="uploadSection" style="display: none;">
@@ -43,19 +82,27 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <script>
-    let name, aoCode, gender;
+    let date, lastname, firstname, middlename, name, flastname, ffirstname, fmiddlename, dob, aoCode, gender;
 
-    function collectDetails() {
-      name = prompt("Enter your name:");
-      aoCode = prompt("Enter AO Code:");
-      gender = prompt("Enter gender (M/F):");
+function collectDetails() {
+  date = document.getElementById("date").value;
+  lastname = document.getElementById("lastname").value;
+  firstname = document.getElementById("firstname").value;
+  middlename = document.getElementById("middlename").value;
+  name = document.getElementById("name").value;
+  flastname = document.getElementById("flastname").value;
+  ffirstname = document.getElementById("ffirstname").value;
+  fmiddlename = document.getElementById("fmiddlename").value;
+  dob = document.getElementById("dob").value;
+  aoCode = document.getElementById("aoCode").value;
+  gender = document.getElementById("gender").value;
 
-      if (name && aoCode && gender) {
-        document.getElementById("uploadSection").style.display = "block";
-      } else {
-        alert("Please provide all the details.");
-      }
-    }
+  if (name && aoCode && gender && date && lastname && firstname && flastname && ffirstname && dob) {
+    document.getElementById("uploadSection").style.display = "block";
+  } else {
+    alert("Please provide all the details.");
+  }
+}
 
 async function renderFileAsImage(file) {
   const A4_WIDTH = 700;
@@ -195,66 +242,71 @@ async function renderFileAsImage(file) {
          				<td style="width: 20%; vertical-align: top;">
   <div style="position: relative; display: inline-block;">
     <img id="emp-photo" src="${photoUrl}" alt="Employee Photo"
-         style="width: 100px; height: 150px; border: 1px solid #ccc; border-radius: 0px;" />
+         style="width: 150px; height: 190px; border: 1px solid #ccc; border-radius: 0px;" />
     
     <img src="${signUrl}" alt="Signature"
-         style="position: absolute; top: 50px; left: -70px; width: 160px; opacity: 0.9; transform: rotate(-20deg);" />
+         style="position: absolute; top: 50px; left: -70px; width: 180px; opacity: 0.9; transform: rotate(-20deg);" />
 	
 
   </div>
 </td>
-
+	
             				  <td style="width: 60%; text-align: center; vertical-align: top;">
-            				    <h1 style="margin: 5px 0; font-size: 10px;">Form No. 49A</h1>
-          				    <h2 style="margin: 5px 0; font-size: 10px;">Application for Allotment of Permanent Account Number</h2>
-              				    <h3 style="margin: 5px 0; font-size: 10px;">[In the case of Indian Citizens/lndian Companies/Entities incorporated in India/</h3>
-              				    <h3 style="margin: 5px 0; font-size: 10px;">Unincorporated entities formed in India]</h3>
-           			            <h3 style="margin: 5px 0; font-size: 10px;">See Rule 114</h3>
+            				    <h1 style="margin: 5px 0; font-size: 14px;">Form No. 49A</h1>
+          				    <h2 style="margin: 5px 0; font-size: 14px;">Application for Allotment of Permanent Account Number</h2>
+              				    <h3 style="margin: 5px 0; font-size: 14px;">[In the case of Indian Citizens/lndian Companies/Entities incorporated in India/</h3>
+              				    <h3 style="margin: 5px 0; font-size: 14px;">Unincorporated entities formed in India]</h3>
+           			            <h3 style="margin: 5px 0; font-size: 14px;">See Rule 114</h3>
              				    <p style="margin: 5px 0; font-size: 7px;">To avoid mistake(s), please follow the accompanying instructions and examples before filling up the form</p>
-             			            <h2 style="margin: 5px 0; font-size: 10px; text-align: left; ">Assessing officer (AO code)</h2>
-					<div style="width: 280px; ">
-					 <table style="width:100%; font-size:8px; border-collapse: collapse; border: 1px solid black;">
-    						<tr>
-     					    	   <td colspan="3" style="padding:0px; text-align: center; border: 1px solid black;"><strong>Area Code</strong></td>
-    						    <td colspan="2" style="padding:0px; text-align: center; border: 1px solid black;"><strong>AO Type</strong></td>
-       							 <td colspan="3" style="padding:0px; text-align: center; border: 1px solid black;"><strong>Range Code</strong></td>
-     							   <td colspan="2" style="padding:0px; text-align: center; border: 1px solid black;"><strong>AO No.</strong></td>
-   						</tr>
-    						<tr>
-       							 <td style="padding:0px; border: 1px solid black;">${aoCode ? aoCode.charAt(0) : " "}</td>
-     							   <td style="padding:0px; border: 1px solid black;">${aoCode ? aoCode.charAt(1) : " "}</td>
-    							    <td style="padding:0px; border: 1px solid black;">${aoCode ? aoCode.charAt(2) : " "}</td>
-   							     <td style="padding:0px; border: 1px solid black;"><span id="ao"></span></td>
-       								 <td style="padding:0px; border: 1px solid black;"><span id="ao1"></span></td>
-       								 <td style="padding:0px; border: 1px solid black;"><span id="range"></span></td>
-       								 <td style="padding:0px; border: 1px solid black;"><span id="range1"></span></td>
-       								 <td style="padding:0px; border: 1px solid black;"><span id="range2"></span></td>
-       								 <td style="padding:0px; border: 1px solid black;"><span id="aono"></span></td>
-       								 <td style="padding:0px; border: 1px solid black;"><span id="aono1"></span></td>
-    						</tr>
-					</table>
+             			            <div style="background: black;">
+  <h2 style="background: grey; margin: 5px 0; font-size: 10px; text-align: left;">Assessing officer (AO code)</h2>
+</div>
+<div style="width: 300px; height: 55px;">
+  <table style="width: 100%; height: 55px; font-size: 10px; border-collapse: collapse; border: 1px solid black;">
+    <tr style="height: 26px;">
+      <td colspan="3" style="padding:0px; text-align: center; border: 1px solid black;"><strong>Area Code</strong></td>
+      <td colspan="2" style="padding:0px; text-align: center; border: 1px solid black;"><strong>AO Type</strong></td>
+      <td colspan="3" style="padding:0px; text-align: center; border: 1px solid black;"><strong>Range Code</strong></td>
+      <td colspan="2" style="padding:0px; text-align: center; border: 1px solid black;"><strong>AO No.</strong></td>
+    </tr>
+    <tr style="height: 29px;">
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${aoCode ? aoCode.charAt(0) : " "}</td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${aoCode ? aoCode.charAt(1) : " "}</td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${aoCode ? aoCode.charAt(2) : " "}</td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;"><span id="ao"></span></td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;"><span id="ao1"></span></td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;"><span id="range"></span></td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;"><span id="range1"></span></td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;"><span id="range2"></span></td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;"><span id="aono"></span></td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;"><span id="aono1"></span></td>
+    </tr>
+  </table>
+</div>
+
+
 
  					 </div>
 					 </td>
            				 <td style="width: 20%; text-align: right; vertical-align: top;">
-           			          <img id="emp-photo1" src="${photoUrl}" alt="Employee Photo" style="width: 100px; height: 150px; border: 1px solid #ccc; border-radius: 0px;" />
+           			          <img id="emp-photo1" src="${photoUrl}" alt="Employee Photo" style="width: 150px; height: 190px; border: 1px solid #ccc; border-radius: 0px;" />
          			        </td>
                                       </tr>
                                  </table>
 
 	
 
-				<table style="width:100%; font-size:10px; height: 75px; margin-top: -6px;">
+				<table style="width:100%; font-size:9px; height: 55px; margin-top: -20px;">
 				<tr style="width:100%; height: 7px">
-	    				<td style="width:150px; padding:px; text-align: center; height: 5px;width:100px; border: 1px solid #000;"> Signature / Left Thumb Impression</td>
+	    				<td style="width:150px; padding:px; text-align: center; height: 5px;width:150px; border: 1px solid #000;"> Signature / Left Thumb Impression  across this photo</td>
   								
 						<td></td>
-    						<td rowspan="2" style="padding:px; text-align: center; border: 1px solid #000;"> <img src="${signUrl}" alt="Signature" width="160">
+    						<td rowspan="2" style="width:280px; padding:px; text-align: center; border: 1px solid #000;"> <img src="${signUrl}" alt="Signature" width="160">
 
 						</td>
   					</tr>
 					<tr>
-	    					<td colspan="2" rowspan="2" style=" text-align: left; vertical-align: middle;border: 0px solid #000;"><strong>Sir,</br>
+	    					<td colspan="2" rowspan="2" style=" font-size:12px; text-align: left; vertical-align: middle;border: 0px solid #000;"><strong>Sir,</br>
 									 I/We hereby request that a permanent account number be allotted to me/us. </br>
  									 I/We give below necessary particulars:</strong>		
 						  					</tr>
@@ -285,20 +337,101 @@ async function renderFileAsImage(file) {
             <td colspan="2" style="border: 0px solid #ccc;">M/s</td>
             <td colspan="16" style="border: 0px solid #ccc;"></td>
         </tr>
-        <tr>
-            <td style="width: 30%; border: 0px solid #ccc;">Last Name / Surname</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        <tr style="border: 1px solid black;">
+            <td style="width: 30%; border: 0px solid #ccc;">Last Name / Surname</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(1) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(2) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(3) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(4) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(5) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(6) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(7) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(8) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(9) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(10) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(11) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(12) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(13) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(14) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(15) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(16) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(17) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(18) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(19) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(20) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(21) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(22) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(23) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(24) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(25) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(27) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(28) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${lastname ? lastname.charAt(29) : " "}</td>
         </tr>
         <tr>
-            <td style="width: 30%; border: 0px solid #ccc;">First Name</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-        </tr>
+            <td style="width: 30%; border: 1px solid #ccc;">First Name</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(1) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(2) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(3) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(4) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(5) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(6) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(7) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(8) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(9) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(10) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(11) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(12) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(13) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(14) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(15) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(16) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(17) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(18) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(19) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(20) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(21) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(22) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(23) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(24) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(25) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(27) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(28) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${firstname ? firstname.charAt(29) : " "}</td> 
+       </tr>
         <tr>
-            <td style="width: 30%; border: 0px solid #ccc;">Middle Name </td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td style="width: 30%; border: 1px solid #ccc;">Middle Name </td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(1) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(2) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(3) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(4) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(5) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(6) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(7) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(8) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(9) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(10) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(11) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(12) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(13) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(14) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(15) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(16) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(17) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(18) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(19) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(20) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(21) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(22) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(23) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(24) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(25) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(27) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(28) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${middlename ? middlename.charAt(29) : " "}</td> 
         </tr>
 
     </table>
@@ -312,14 +445,91 @@ async function renderFileAsImage(file) {
 
 
         <tr>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(0) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(1) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(2) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(3) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(4) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(5) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(6) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(7) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(8) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(9) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(10) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(11) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(12) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(13) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(14) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(15) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(16) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(17) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(18) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(19) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(20) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(21) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(22) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(23) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(24) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(25) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(27) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(28) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(29) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(30) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(31) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(32) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(33) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(34) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(35) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(36) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(37) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(38) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(39) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(40) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(41) : " "}</td>
         </tr>
           <tr>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(42) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(43) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(44) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(45) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(46) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(47) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(48) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(49) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(50) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(51) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(52) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(53) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(54) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(55) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(57) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(58) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(59) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(60) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(61) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(62) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(63) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(64) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(65) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(66) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(67) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(68) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(69) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(70) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(71) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(72) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(73) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(74) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(75) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(76) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(77) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(78) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(79) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(80) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(81) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(82) : " "}</td>
+<td style="width: 2.413%; height: 15px; border: 1px solid black;">${name ? name.charAt(83) : " "}</td>
+
         </tr>
        
 
@@ -334,7 +544,7 @@ async function renderFileAsImage(file) {
           </tr>
         <tr>
             <td style="width: 30%; border: 0px solid #ccc;">Please select title, as applicable</td>
-            <td></td>
+            <td style="width: 2.413%; border: 1px solid black;"></td>
             <td colspan="2" style="border: 0px solid #ccc;">Shri</td>
             <td></td>
             <td colspan="2" style="border: 0px solid #ccc;">Smt.</td>
@@ -386,8 +596,16 @@ async function renderFileAsImage(file) {
             
         </tr>
           <tr>
-            <td>A</td><td>A</td><td style="border: 0px solid #ccc;"></td><td>A</td><td>A</td><td style="border: 0px solid #ccc;"></td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td>
+<td>${dob ? dob.charAt(0) : " "}</td>
+<td>${dob ? dob.charAt(1) : " "}</td>
+<td style="border: 0px solid #ccc;"></td>
+<td>${dob ? dob.charAt(3) : " "}</td>
+<td>${dob ? dob.charAt(4) : " "}</td>
+<td style="border: 0px solid #ccc;"></td>
+<td>${dob ? dob.charAt(6) : " "}</td>
+<td>${dob ? dob.charAt(7) : " "}</td>
+<td>${dob ? dob.charAt(8) : " "}</td>
+<td>${dob ? dob.charAt(9) : " "}</td>
         </tr>
        
 
@@ -408,20 +626,101 @@ async function renderFileAsImage(file) {
      
         
         <tr>
-            <td style="width: 30%; border: 0px solid #ccc;">Last Name / Surname</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td style="width: 30%; border: 0px solid #ccc;">Last Name / Surname</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(1) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(2) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(3) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(4) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(5) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(6) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(7) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(8) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(9) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(10) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(11) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(12) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(13) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(14) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(15) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(16) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(17) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(18) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(19) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(20) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(21) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(22) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(23) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(24) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(25) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(27) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(28) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(29) : " "}</td>
         </tr>
         <tr>
-            <td style="width: 30%; border: 0px solid #ccc;">First Name</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td style="width: 30%; border: 0px solid #ccc;">First Name</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(1) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(2) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(3) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(4) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(5) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(6) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(7) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(8) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(9) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(10) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(11) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(12) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(13) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(14) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(15) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(16) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(17) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(18) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(19) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(20) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(21) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(22) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(23) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(24) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(25) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(27) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(28) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(29) : " "}</td>
         </tr>
         <tr>
-            <td style="width: 30%; border: 0px solid #ccc;">Middle Name </td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
-      
+            <td style="width: 30%; border: 0px solid #ccc;">Middle Name </td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(1) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(2) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(3) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(4) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(5) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(6) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(7) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(8) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(9) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(10) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(11) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(12) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(13) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(14) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(15) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(16) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(17) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(18) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(19) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(20) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(21) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(22) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(23) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(24) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(25) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(27) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(28) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(29) : " "}</td>
+
 
     </table>
    
@@ -811,6 +1110,20 @@ by furnishing name of the mother only)’</p>
             <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
         </tr>
 
+ <tr>
+            <td> ${date ? date.charAt(0) : " "}</td>
+            <td>${date ? date.charAt(1) : " "}</td>
+            <td>${date ? date.charAt(3) : " "}</td>
+            <td>${date ? date.charAt(4) : " "}</td>
+            <td>${date ? date.charAt(6) : " "}</td>
+            <td>${date ? date.charAt(7) : " "}</td>
+            <td>${date ? date.charAt(8) : " "}</td>
+            <td>${date ? date.charAt(9) : " "}</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+            <td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td><td>A</td>
+        </tr>
+
+
 
        
 
@@ -832,7 +1145,7 @@ by furnishing name of the mother only)’</p>
                                     <p><strong>Signature:</strong> <img src="${signUrl}" alt="Signature" width="100"></p>
 					<p><strong></strong><br><img src="${aadhaarImgUrl}" class="a4"/></p>
              			     ${otherPdfImgUrl ? `<p><strong>Other File Preview:</strong><br><img src="${otherPdfImgUrl}" class="a4"/></p>` : ''}
-           
+           d
 				
 
                                 </body>
