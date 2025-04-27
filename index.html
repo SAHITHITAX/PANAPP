@@ -142,7 +142,7 @@ function collectDetails() {
 async function renderFileAsImage(file) {
   const A4_WIDTH = 700;
   const A4_HEIGHT = 1100;
-  const QUALITY_MULTIPLIER = 4; // 4x bigger for ultra quality (can set 5 or 6 too)
+  const QUALITY_MULTIPLIER = 3; // 4x bigger for ultra quality (can set 5 or 6 too)
 
   if (file.type === "application/pdf") {
     const arrayBuffer = await file.arrayBuffer();
