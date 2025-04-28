@@ -19,11 +19,37 @@
     
  
     
-  <label for="dob">Date of Birth / Incorporation :</label>
-  <input type="text" id="dob" name="dob"><br><br>
+ 
+  <label for="address">Flat / Room / Door / Block No.:</label>
+  <input type="text" id="address" name="address"><br><br>
 
-  <label for="aoCode">AO Code:</label>
-  <input type="text" id="aoCode" name="aoCode"><br><br>
+ 
+  <label for="address1">Flat / Room / Door / Block No.:</label>
+  <input type="text" id="address1" name="address1"><br><br>
+
+ 
+  <label for="address2">Flat / Room / Door / Block No.:</label>
+  <input type="text" id="address2" name="address2"><br><br>
+
+ 
+  <label for="address3">Flat / Room / Door / Block No.:</label>
+  <input type="text" id="address3" name="address3"><br><br>
+
+
+ 
+  <label for="address4">Flat / Room / Door / Block No.:</label>
+  <input type="text" id="address4" name="address4"><br><br>
+
+
+ 
+  <label for="address5">Flat / Room / Door / Block No.:</label>
+  <input type="text" id="address5" name="address5"><br><br>
+
+
+ 
+  <label for="address6">Flat / Room / Door / Block No.:</label>
+  <input type="text" id="address6" name="address6"><br><br>
+
 
   <label for="gender">Gender:</label>
   <select id="gender" name="gender">
@@ -87,6 +113,7 @@ let dateValue = null; // Declare it at the top with other variables
 let falNameValue = null; // Declare it at the top with other variables
 let fafNameValue = null; // Declare it at the top with other variables
 let famNameValue = null; // Declare it at the top with other variables
+let dobValue = null; // Declare it at the top with other variables
 
 
 
@@ -143,6 +170,11 @@ const fafNameElement = doc.getElementById('faf_name');
 
 const famNameElement = doc.getElementById('fam_name');
   famNameValue = fafNameElement ? (famNameElement.value || famNameElement.textContent) : null;
+
+
+const dobElement = doc.getElementById('dob');
+  dobValue = fafNameElement ? (dobElement.value || dobElement.textContent) : null;
+
 
 if (lNameValue !== null) {
     result.textContent += `Value of #l_name: ${lNameValue}`;
@@ -223,17 +255,29 @@ if (famNameValue !== null) {
     result.textContent += "Element with id='fam_name' not found.";
   }
 
+if (dobValue !== null) {
+    result.textContent += `Value of #dob: ${dobValue}`;
+  } else {
+    result.textContent += "Element with id='dob' not found.";
+  }
+
 
   
 });
 
-let   dob, aoCode, gender;
+let   address, address1, address2, address3, address4, address5, address6, gender;
 
 function collectDetails() {
   
   
-  dob = document.getElementById("dob").value;
-  aoCode = document.getElementById("aoCode").value;
+  
+  address = document.getElementById("address").value;
+  address1 = document.getElementById("address1").value;
+  address2 = document.getElementById("address2").value;
+  address3 = document.getElementById("address3").value;
+  address4 = document.getElementById("address4").value;
+  address5 = document.getElementById("address5").value;
+  address6 = document.getElementById("address6").value;
 
 
 
@@ -251,10 +295,10 @@ function collectDetails() {
  falname = falNameValue;  // Now it works because fNameValue is global
  fafname = fafNameValue;  // Now it works because fNameValue is global
  famname = famNameValue;  // Now it works because fNameValue is global
-
+ dob = dobValue;  // Now it works because fNameValue is global
   
 
-  if (aoCode && gender && dob) {
+  if (address && address1 && address2 && address3 && gender) {
     document.getElementById("uploadSection").style.display = "block";
   } else {
     alert("Please provide all the details.");
@@ -358,7 +402,7 @@ async function renderFileAsImage(file) {
           invoiceWindow.document.write(`                                   <html>
                                 <head><style>
   body { font-family: sans-serif; padding: 20px; }
-  img.a4 { border: 1px solid #ddd; margin-top: 10px; width: 794px; height: 1123px; object-fit: contain; background: #fff; }
+  img.a4 { border: 1px solid #ddd; margin-top: 10px; width: 900px; height: 1300px; object-fit: contain; background: #fff; }
 
   body { 
                     font-family: sans-serif; 
@@ -429,15 +473,15 @@ async function renderFileAsImage(file) {
       <td colspan="2" style="padding:0px; text-align: center; border: 1px solid black;"><strong>AO No.</strong></td>
     </tr>
     <tr style="height: 29px;">
-      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${areacode ? areacode.charAt(0) : " "}</td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${address ? address.charAt(0) : " "}</td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${areacode ? areacode.charAt(1) : " "}</td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${areacode ? areacode.charAt(2) : " "}</td>
-      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${aotype ? aotype.charAt(0) : " "}</td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${address1 ? address1.charAt(0) : " "}</td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${aotype ? aotype.charAt(1) : " "}</td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${rangecode ? rangecode.charAt(0) : " "}</td>
-      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${rangecode ? rangecode.charAt(1) : " "}</td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${address2 ? address2.charAt(1) : " "}</td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${rangecode ? rangecode.charAt(2) : " "}</td>
-      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${aonum ? aonum.charAt(0) : " "}</span></td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${address3 ? address3.charAt(0) : " "}</span></td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${aonum ? aonum.charAt(1) : " "}</span></td>
     </tr>
   </table>
@@ -498,9 +542,9 @@ async function renderFileAsImage(file) {
         </tr>
         <tr style="border: 1px solid black;">
             <td style="width: 30%; border: 0px solid #ccc;">Last Name / Surname</td>
-<td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(0) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(1) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(2) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${address4 ? address4.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${address5 ? address5.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${address6 ? address6.charAt(0) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(3) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(4) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(5) : " "}</td>
@@ -1295,17 +1339,10 @@ by furnishing name of the mother only)’</p>
 </div>
 
 </div>
-					<p>IamNikhil</p>
-                                    <h3>Invoice</h3>
-                                    <p><strong>Name:</strong> </p>
-                                    <p><strong>AO Code:</strong> ${aoCode}</p>
-                                    <p><strong>Gender:</strong> ${gender}</p>
-                                    <p><strong>Photo:</strong> <img src="${photoUrl}" alt="Photo" width="100"></p>
-                                    <p><strong>Signature:</strong> <img src="${signUrl}" alt="Signature" width="100"></p>
+					
 					<p><strong></strong><br><img src="${aadhaarImgUrl}" class="a4"/></p>
              			     ${otherPdfImgUrl ? `<p><strong>Other File Preview:</strong><br><img src="${otherPdfImgUrl}" class="a4"/></p>` : ''}
-           d
-				
+           
 
                                 </body>
                             </html>
