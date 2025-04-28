@@ -13,31 +13,12 @@
 </head>
 <body>
 <form id="detailsForm">
-  <label for="date">Application Date:</label>
-  <input type="text" id="date" name="date"><br><br>
+      
+   
 
-    <label for="lastname">Last Name:</label>
-  <input type="text" id="lastname" name="lastname"><br><br>
-
-    <label for="firstname">First Name:</label>
-  <input type="text" id="firstname" name="firstname"><br><br>
-
-    <label for="middlename">Middle Name:</label>
-  <input type="text" id="middlename" name="middlename"><br><br>
-
-
-  <label for="full name">Name:</label>
-  <input type="text" id="name" name="name"><br><br>
-
-    <label for="flastname">Father's Last Name:</label>
-  <input type="text" id="flastname" name="flastname"><br><br>
-
-    <label for="ffirstname">Father's First Name:</label>
-  <input type="text" id="ffirstname" name="ffirstname"><br><br>
-
-    <label for="fmiddlename">Father's Middle Name:</label>
-  <input type="text" id="fmiddlename" name="fmiddlename"><br><br>
-
+    
+ 
+    
   <label for="dob">Date of Birth / Incorporation :</label>
   <input type="text" id="dob" name="dob"><br><br>
 
@@ -102,6 +83,10 @@ let areacodeValue = null; // Declare it at the top with other variables
 let aotypeValue = null; // Declare it at the top with other variables
 let rangecodeValue = null; // Declare it at the top with other variables
 let aonumValue = null; // Declare it at the top with other variables
+let dateValue = null; // Declare it at the top with other variables
+let falNameValue = null; // Declare it at the top with other variables
+let fafNameValue = null; // Declare it at the top with other variables
+let famNameValue = null; // Declare it at the top with other variables
 
 
 
@@ -146,7 +131,18 @@ const nCardElement = doc.getElementById('name_card');
 const aonumElement = doc.getElementById('ao_num');
   aonumValue = aonumElement ? (aonumElement.value || aonumElement.textContent) : null;
 
+const dateElement = doc.getElementById('date');
+  dateValue = dateElement ? (dateElement.value || dateElement.textContent) : null;
 
+
+const falNameElement = doc.getElementById('fal_name');
+  falNameValue = falNameElement ? (falNameElement.value || falNameElement.textContent) : null;
+
+const fafNameElement = doc.getElementById('faf_name');
+  fafNameValue = fafNameElement ? (fafNameElement.value || fafNameElement.textContent) : null;
+
+const famNameElement = doc.getElementById('fam_name');
+  famNameValue = fafNameElement ? (famNameElement.value || famNameElement.textContent) : null;
 
 if (lNameValue !== null) {
     result.textContent += `Value of #l_name: ${lNameValue}`;
@@ -201,22 +197,41 @@ if (aonumValue !== null) {
     result.textContent += "Element with id='ao_num' not found.";
   }
 
+if (dateValue !== null) {
+    result.textContent += `Value of #date: ${dateValue}`;
+  } else {
+    result.textContent += "Element with id='date' not found.";
+  }
+
+if (falNameValue !== null) {
+    result.textContent += `Value of #fal_name: ${falNameValue}`;
+  } else {
+    result.textContent += "Element with id='fal_name' not found.";
+  }
+
+
+if (fafNameValue !== null) {
+    result.textContent += `Value of #faf_name: ${fafNameValue}`;
+  } else {
+    result.textContent += "Element with id='faf_name' not found.";
+  }
+
+
+if (famNameValue !== null) {
+    result.textContent += `Value of #fam_name: ${famNameValue}`;
+  } else {
+    result.textContent += "Element with id='fam_name' not found.";
+  }
 
 
   
 });
 
-let date, lastname, firstname, middlename, name, flastname, ffirstname, fmiddlename, dob, aoCode, gender, fname;
+let   dob, aoCode, gender;
 
 function collectDetails() {
-  date = document.getElementById("date").value;
-  lastname = document.getElementById("lastname").value;
-  firstname = document.getElementById("firstname").value;
-  middlename = document.getElementById("middlename").value;
-  name = document.getElementById("name").value;
-  flastname = document.getElementById("flastname").value;
-  ffirstname = document.getElementById("ffirstname").value;
-  fmiddlename = document.getElementById("fmiddlename").value;
+  
+  
   dob = document.getElementById("dob").value;
   aoCode = document.getElementById("aoCode").value;
 
@@ -232,10 +247,14 @@ function collectDetails() {
   aotype = aotypeValue;  // Now it works because fNameValue is global
   rangecode = rangecodeValue;  // Now it works because fNameValue is global
   aonum = aonumValue;  // Now it works because fNameValue is global
+  date = dateValue;  // Now it works because fNameValue is global
+ falname = falNameValue;  // Now it works because fNameValue is global
+ fafname = fafNameValue;  // Now it works because fNameValue is global
+ famname = famNameValue;  // Now it works because fNameValue is global
 
   
 
-  if (name && aoCode && gender && date && lastname && firstname && flastname && ffirstname && dob) {
+  if (aoCode && gender && dob) {
     document.getElementById("uploadSection").style.display = "block";
   } else {
     alert("Please provide all the details.");
@@ -244,8 +263,8 @@ function collectDetails() {
 }
 
 async function renderFileAsImage(file) {
-  const A4_WIDTH = 700;
-  const A4_HEIGHT = 1100;
+  const A4_WIDTH = 900;
+  const A4_HEIGHT = 1300;
   const QUALITY_MULTIPLIER = 2; // 4x bigger for ultra quality (can set 5 or 6 too)
 
   if (file.type === "application/pdf") {
@@ -767,99 +786,99 @@ async function renderFileAsImage(file) {
         
         <tr>
             <td style="width: 30%; border: 0px solid #ccc;">Last Name / Surname</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(0) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(1) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(2) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(3) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(4) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(5) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(6) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(7) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(8) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(9) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(10) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(11) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(12) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(13) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(14) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(15) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(16) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(17) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(18) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(19) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(20) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(21) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(22) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(23) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(24) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(25) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(27) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(28) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${flastname ? flastname.charAt(29) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(1) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(2) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(3) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(4) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(5) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(6) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(7) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(8) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(9) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(10) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(11) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(12) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(13) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(14) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(15) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(16) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(17) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(18) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(19) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(20) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(21) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(22) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(23) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(24) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(25) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(27) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(28) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${falname ? falname.charAt(29) : " "}</td>
         </tr>
         <tr>
             <td style="width: 30%; border: 0px solid #ccc;">First Name</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(0) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(1) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(2) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(3) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(4) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(5) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(6) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(7) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(8) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(9) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(10) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(11) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(12) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(13) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(14) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(15) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(16) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(17) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(18) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(19) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(20) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(21) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(22) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(23) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(24) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(25) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(27) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(28) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${ffirstname ? ffirstname.charAt(29) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(1) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(2) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(3) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(4) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(5) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(6) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(7) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(8) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(9) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(10) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(11) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(12) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(13) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(14) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(15) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(16) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(17) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(18) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(19) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(20) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(21) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(22) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(23) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(24) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(25) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(27) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(28) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${fafname ? fafname.charAt(29) : " "}</td>
         </tr>
         <tr>
             <td style="width: 30%; border: 0px solid #ccc;">Middle Name </td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(0) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(1) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(2) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(3) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(4) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(5) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(6) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(7) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(8) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(9) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(10) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(11) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(12) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(13) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(14) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(15) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(16) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(17) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(18) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(19) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(20) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(21) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(22) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(23) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(24) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(25) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(27) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(28) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${fmiddlename ? fmiddlename.charAt(29) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(1) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(2) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(3) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(4) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(5) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(6) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(7) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(8) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(9) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(10) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(11) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(12) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(13) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(14) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(15) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(16) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(17) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(18) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(19) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(20) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(21) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(22) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(23) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(24) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(25) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(27) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(28) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${famname ? famname.charAt(29) : " "}</td>
 
 
     </table>
@@ -1278,7 +1297,7 @@ by furnishing name of the mother only)’</p>
 </div>
 					<p>IamNikhil</p>
                                     <h3>Invoice</h3>
-                                    <p><strong>Name:</strong> ${name}</p>
+                                    <p><strong>Name:</strong> </p>
                                     <p><strong>AO Code:</strong> ${aoCode}</p>
                                     <p><strong>Gender:</strong> ${gender}</p>
                                     <p><strong>Photo:</strong> <img src="${photoUrl}" alt="Photo" width="100"></p>
