@@ -114,6 +114,10 @@ let falNameValue = null; // Declare it at the top with other variables
 let fafNameValue = null; // Declare it at the top with other variables
 let famNameValue = null; // Declare it at the top with other variables
 let dobValue = null; // Declare it at the top with other variables
+let telValue = null; // Declare it at the top with other variables
+let emailValue = null; // Declare it at the top with other variables
+let catValue = null; // Declare it at the top with other variables
+let aadhaarNoValue = null; // Declare it at the top with other variables
 
 
 
@@ -169,13 +173,27 @@ const fafNameElement = doc.getElementById('faf_name');
   fafNameValue = fafNameElement ? (fafNameElement.value || fafNameElement.textContent) : null;
 
 const famNameElement = doc.getElementById('fam_name');
-  famNameValue = fafNameElement ? (famNameElement.value || famNameElement.textContent) : null;
+  famNameValue = famNameElement ? (famNameElement.value || famNameElement.textContent) : null;
 
 
 const dobElement = doc.getElementById('dob');
-  dobValue = fafNameElement ? (dobElement.value || dobElement.textContent) : null;
+  dobValue = dobElement ? (dobElement.value || dobElement.textContent) : null;
+
+const telElement = doc.getElementById('tel_num');
+  telValue = telElement ? (telElement.value || telElement.textContent) : null;
 
 
+const emailElement = doc.getElementById('email_id');
+  emailValue = emailElement ? (emailElement.value || emailElement.textContent) : null;
+
+
+const catElement = doc.getElementById('cat_applicant');
+  catValue = catElement ? (catElement.value || catElement.textContent) : null;
+
+const aadhaarNoElement = doc.getElementById('aadhaarNo');
+  aadhaarNoValue = aadhaarNoElement ? (aadhaarNoElement.value || aadhaarNoElement.textContent) : null;
+
+ 
 if (lNameValue !== null) {
     result.textContent += `Value of #l_name: ${lNameValue}`;
   } else {
@@ -261,7 +279,30 @@ if (dobValue !== null) {
     result.textContent += "Element with id='dob' not found.";
   }
 
+if (telValue !== null) {
+    result.textContent += `Value of #tel_num: ${telValue}`;
+  } else {
+    result.textContent += "Element with id='tel_num' not found.";
+  }
 
+if (emailValue !== null) {
+    result.textContent += `Value of #email_id: ${emailValue}`;
+  } else {
+    result.textContent += "Element with id='email_id' not found.";
+  }
+
+if (catValue !== null) {
+    result.textContent += `Value of #cat_applicant: ${catValue}`;
+  } else {
+    result.textContent += "Element with id='cat_applicant' not found.";
+  }
+
+if (aadhaarNoValue !== null) {
+    result.textContent += `Value of #aadhaarNo: ${aadhaarNoValue}`;
+  } else {
+    result.textContent += "Element with id='aadhaarNo' not found.";
+  }
+  
   
 });
 
@@ -292,11 +333,15 @@ function collectDetails() {
   rangecode = rangecodeValue;  // Now it works because fNameValue is global
   aonum = aonumValue;  // Now it works because fNameValue is global
   date = dateValue;  // Now it works because fNameValue is global
- falname = falNameValue;  // Now it works because fNameValue is global
- fafname = fafNameValue;  // Now it works because fNameValue is global
- famname = famNameValue;  // Now it works because fNameValue is global
- dob = dobValue;  // Now it works because fNameValue is global
-  
+  falname = falNameValue;  // Now it works because fNameValue is global
+  fafname = fafNameValue;  // Now it works because fNameValue is global
+  famname = famNameValue;  // Now it works because fNameValue is global
+  dob = dobValue;  // Now it works because fNameValue is global
+  tel = telValue;  // Now it works because fNameValue is global
+  email = emailValue;  // Now it works because fNameValue is global
+  cat = catValue;  // Now it works because fNameValue is global
+  aadhaarNo = aadhaarNoValue;  // Now it works because fNameValue is global
+
 
   if (address && address1 && address2 && address3 && gender) {
     document.getElementById("uploadSection").style.display = "block";
@@ -473,7 +518,7 @@ async function renderFileAsImage(file) {
       <td colspan="2" style="padding:0px; text-align: center; border: 1px solid black;"><strong>AO No.</strong></td>
     </tr>
     <tr style="height: 29px;">
-      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${address ? address.charAt(0) : " "}</td>
+      <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${tel ? tel.charAt(0) : " "}</td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${areacode ? areacode.charAt(1) : " "}</td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${areacode ? areacode.charAt(2) : " "}</td>
       <td style="padding:0px; text-align: center; border: 1px solid black; width: 10%;">${address1 ? address1.charAt(0) : " "}</td>
@@ -545,9 +590,9 @@ async function renderFileAsImage(file) {
 <td style="width: 2.413%; border: 1px solid black;">${address4 ? address4.charAt(0) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${address5 ? address5.charAt(0) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${address6 ? address6.charAt(0) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(3) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(4) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(5) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${email ? email.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${cat ? cat.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${aadhaarNo ? aadhaarNo.charAt(0) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(6) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(7) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(8) : " "}</td>
