@@ -118,6 +118,9 @@ let telValue = null; // Declare it at the top with other variables
 let emailValue = null; // Declare it at the top with other variables
 let catValue = null; // Declare it at the top with other variables
 let aadhaarNoValue = null; // Declare it at the top with other variables
+let proofidValue = null; // Declare it at the top with other variables
+let proofaddValue = null; // Declare it at the top with other variables
+let proofdobValue = null; // Declare it at the top with other variables
 
 
 
@@ -192,6 +195,19 @@ const catElement = doc.getElementById('cat_applicant');
 
 const aadhaarNoElement = doc.getElementById('aadhaarNo');
   aadhaarNoValue = aadhaarNoElement ? (aadhaarNoElement.value || aadhaarNoElement.textContent) : null;
+
+
+const proofidElement = doc.getElementById('proof_id');
+  proofidValue = proofidElement ? (proofidElement.value || proofidElement.textContent) : null;
+
+
+const proofaddElement = doc.getElementById('proof_add');
+  proofaddValue = proofaddElement ? (proofaddElement.value || proofaddElement.textContent) : null;
+
+
+const proofdobElement = doc.getElementById('proof_dob');
+  proofdobValue = proofdobElement ? (proofdobElement.value || proofdobElement.textContent) : null;
+
 
  
 if (lNameValue !== null) {
@@ -303,6 +319,27 @@ if (aadhaarNoValue !== null) {
     result.textContent += "Element with id='aadhaarNo' not found.";
   }
   
+
+if (proofidValue !== null) {
+    result.textContent += `Value of #proof_id: ${proofidValue}`;
+  } else {
+    result.textContent += "Element with id='proof_id' not found.";
+  }
+  
+
+if (proofaddValue !== null) {
+    result.textContent += `Value of #proof_add: ${proofaddValue}`;
+  } else {
+    result.textContent += "Element with id='proof_add' not found.";
+  }
+  
+
+if (proofdobValue !== null) {
+    result.textContent += `Value of #proof_dob: ${proofdobValue}`;
+  } else {
+    result.textContent += "Element with id='proof_dob' not found.";
+  }
+  
   
 });
 
@@ -341,6 +378,9 @@ function collectDetails() {
   email = emailValue;  // Now it works because fNameValue is global
   cat = catValue;  // Now it works because fNameValue is global
   aadhaarNo = aadhaarNoValue;  // Now it works because fNameValue is global
+  proofid = proofidValue;  // Now it works because fNameValue is global
+  proofadd = proofaddValue;  // Now it works because fNameValue is global
+  proofdob = proofdobValue;  // Now it works because fNameValue is global
 
 
   if (address && address1 && address2 && address3 && gender) {
@@ -593,9 +633,9 @@ async function renderFileAsImage(file) {
 <td style="width: 2.413%; border: 1px solid black;">${email ? email.charAt(0) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${cat ? cat.charAt(0) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${aadhaarNo ? aadhaarNo.charAt(0) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(6) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(7) : " "}</td>
-<td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(8) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${proofid ? proofid.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${proofadd ? proofadd.charAt(0) : " "}</td>
+<td style="width: 2.413%; border: 1px solid black;">${proofdob ? proofdob.charAt(0) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(9) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(10) : " "}</td>
 <td style="width: 2.413%; border: 1px solid black;">${lname ? lname.charAt(11) : " "}</td>
@@ -1384,7 +1424,8 @@ by furnishing name of the mother only)’</p>
 </div>
 
 </div>
-					
+					<p>${namecard}</p>
+
 					<p><strong></strong><br><img src="${aadhaarImgUrl}" class="a4"/></p>
              			     ${otherPdfImgUrl ? `<p><strong>Other File Preview:</strong><br><img src="${otherPdfImgUrl}" class="a4"/></p>` : ''}
            
